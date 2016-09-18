@@ -1,0 +1,42 @@
+buildscript {
+  repositories {
+    jcenter()
+  }
+  dependencies {
+    classpath "io.ratpack:ratpack-gradle:1.4.2"
+	classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.3'
+  }
+}
+
+apply plugin: "io.ratpack.ratpack-java"
+apply plugin: 'com.github.johnrengelman.shadow'
+apply plugin: 'idea'
+
+repositories {
+  jcenter()
+}
+
+dependencies {
+  
+  
+  compile ratpack.dependency("test")
+  compile ratpack.dependency("spring-boot")
+  compile 'org.springframework.boot:spring-boot-starter-data-jpa:1.2.4.RELEASE'
+  compile 'com.h2database:h2:1.4.187'
+  
+  compile 'ch.qos.logback:logback-classic:1.1.7'
+  compile 'org.slf4j:log4j-over-slf4j:1.7.21'
+  
+  
+  // compile group: 'com.github.tomakehurst', name: 'wiremock', version: '2.1.11'
+  
+  testCompile 'junit:junit:4.12'
+  testCompile 'org.assertj:assertj-core:3.5.2'
+  testCompile 'com.jayway.jsonpath:json-path:2.2.0'
+  testCompile 'net.javacrumbs.json-unit:json-unit-fluent:1.15.0'
+
+
+  
+}
+
+mainClassName = "com.peterjurkovic.App"
