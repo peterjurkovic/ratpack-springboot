@@ -1,11 +1,8 @@
 package com.peterjurkovic;
 
-import static ratpack.jackson.Jackson.json;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import ratpack.exec.Blocking;
 import ratpack.registry.Registry;
 import ratpack.server.RatpackServer;
 import ratpack.spring.Spring;
@@ -29,23 +26,16 @@ public class App {
 				.prefix("product", a -> a.
 					get(":id", ctx -> {
 						Long id = ctx.getPathTokens().asLong("id");
-						Blocking.get(() -> {
-							return ctx.get(SpringProductService.class).getById(id);
-						}).then( product -> {
-							ctx.render( json( product ) ); 
-						});
+						ctx.get(AsyncProductService.class)
+							.getById(id)
+							.then(ctx::render);
+						
 					})
 					.get(ctx -> {
 						log.info("Retrieving list of products...");
-						Blocking.get(() -> {
-							log.info("Blocking ...");
-							return ctx.get(ProductService.class).list();
-						}).then( list -> {
-							log.info("all done! just rendering..");
-							ctx.render( json( list ) ); 
-						});
-						
-						log.info("after blocking statement");
+						ctx.get(AsyncProductService.class)
+						.list()
+						.then(ctx::render);
 					})
 				)
 			 )
