@@ -19,19 +19,12 @@ public class App {
 		ProductRepository repo = springBoot.get(ProductRepository.class);
 		repo.save(new Product(1L, "test 1"));
 		repo.save(new Product(2L, "test 2"));
-		log.info(repo.findAll().toString()); 
-		SpringProductService sr = springBoot.get(SpringProductService.class);
-		System.out.println("SPRING SERVICE " + sr) ;
+		
 		RatpackServer.start(s -> s 
 			 .serverConfig( configBuilder -> configBuilder
 	             .development(true)
 			 )
-			 .registry(springBoot)
-			 .registryOf(r -> r
-//					 .add(ProductService.class, new BlockingProductService())
-					 .add(new ExecutionInterceptor())
-//					 .add( springBoot )
-			 )
+			 .registry (springBoot)
 			 .handlers( chain -> chain
 				.prefix("product", a -> a.
 					get(":id", ctx -> {
